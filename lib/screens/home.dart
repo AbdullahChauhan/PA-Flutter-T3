@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pa_flutter_t3/core/models/Post.dart';
@@ -11,10 +12,8 @@ import 'comments.dart';
 
 class Home extends StatefulWidget {
   final String userID;
-  final String userName;
-  final String userEmail;
 
-  Home({@required this.userID, @required this.userName, this.userEmail});
+  Home({@required this.userID});
 
   @override
   _HomeState createState() => _HomeState();
@@ -24,9 +23,16 @@ class _HomeState extends State<Home> {
   List<Post> posts;
   Api api;
   bool isLoaded;
+  String userName;
+  String userEmail;
 
   @override
   void initState() {
+    FirebaseAuth.instance.currentUser().then((value) {
+      userName = value.displayName;
+      userEmail = value.email;
+    });
+
     posts = [];
     isLoaded = false;
     api = Api("posts");
@@ -77,7 +83,7 @@ class _HomeState extends State<Home> {
       _loadPosts();
       isLoaded = true;
     }
-    
+
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
@@ -91,13 +97,13 @@ class _HomeState extends State<Home> {
               ),
               onPressed: () {
                 Navigator.of(context).push(CupertinoPageRoute(
-                    builder: (ctx) => AddPost(
-                        userID: widget.userID, userName: widget.userName)));
+                    builder: (ctx) =>
+                        AddPost(userID: widget.userID, userName: userName)));
               },
             )
           ],
         ),
-        drawer: NavigationDrawer(widget.userName, widget.userEmail),
+        drawer: NavigationDrawer(userName, userEmail),
         body: RefreshIndicator(
           onRefresh: _handleRefresh,
           child: posts.isNotEmpty
@@ -234,8 +240,7 @@ class _HomeState extends State<Home> {
                                               .push(CupertinoPageRoute(
                                                   builder: (ctx) => Comments(
                                                         currentPost: posts[idx],
-                                                        userName:
-                                                            widget.userName,
+                                                        userName: userName,
                                                       )));
                                         },
                                         child: Text(
@@ -264,7 +269,7 @@ class _HomeState extends State<Home> {
                                           .push(CupertinoPageRoute(
                                               builder: (ctx) => Comments(
                                                     currentPost: posts[idx],
-                                                    userName: widget.userName,
+                                                    userName: userName,
                                                   )));
                                     },
                                     child: posts[idx].comments == null ||

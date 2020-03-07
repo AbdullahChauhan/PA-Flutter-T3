@@ -22,7 +22,6 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     isLoading = false;
-    checkUser();
     super.initState();
   }
 
@@ -31,7 +30,7 @@ class _SignUpState extends State<SignUp> {
     if (user != null) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (ctx) =>
-              Home(userID: user.uid, userName: user.displayName, userEmail: user.email)));
+              Home(userID: user.uid,)));
     }
   }
 
