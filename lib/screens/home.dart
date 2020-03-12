@@ -290,12 +290,7 @@ class _HomeState extends State<Home> {
                           )
                         ]);
                   })
-              : Center(
-                  child: Text(
-                    'No posts here ...',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
+              : SizedBox(),
         ),
       ),
     );
