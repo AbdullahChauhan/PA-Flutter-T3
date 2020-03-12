@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pa_flutter_t3/core/services/Api.dart';
 import 'package:pa_flutter_t3/screens/add_post.dart';
 import 'package:pa_flutter_t3/screens/auth/google_sign_in.dart';
@@ -14,6 +15,11 @@ class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark
+          .copyWith(
+            statusBarColor: Colors.white,
+            systemNavigationBarColor: Colors.white),
       child: Column(
         children: <Widget>[
           Expanded(
@@ -184,6 +190,7 @@ class NavigationDrawer extends StatelessWidget {
               )),
         ],
       ),
+      )
     );
   }
 }

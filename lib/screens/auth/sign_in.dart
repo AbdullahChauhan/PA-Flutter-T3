@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pa_flutter_t3/screens/auth/google_sign_in.dart';
@@ -55,167 +56,173 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-          minimum: EdgeInsets.all(18.0),
-          maintainBottomViewPadding: true,
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Welcome to ',
-                                style: Theme.of(context).textTheme.title,
-                              ),
-                              Text('New Talk',
-                                  style: TextStyle(
-                                      fontSize: 24.0,
-                                      fontWeight: FontWeight.w600))
-                            ],
-                          ),
-                          Text(
-                            'Please Login OR Sign up to continue app',
-                          ),
-                          SizedBox(
-                            height: 24.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              GoogleSignInButton(
-                                darkMode: true,
-                                text: 'Google',
-                                onPressed: () {
-                                  var status = signInWithGoogle();
-                                  status.whenComplete(() {}).then((value) {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return Home(
-                                            userID: value.uid,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  });
-                                },
-                              ),
-                              FacebookSignInButton(
-                                text: 'Facebook',
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                  child: Divider(
-                                height: 2.0,
-                                color: Colors.grey,
-                                indent: 50,
-                                endIndent: 10,
-                              )),
-                              Text('OR'),
-                              Expanded(
-                                  child: Divider(
-                                height: 2.0,
-                                color: Colors.grey,
-                                indent: 10,
-                                endIndent: 50,
-                              )),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          TextFormField(
-                            controller: emailCtrl,
-                            validator: (value) {
-                              if (!value.contains("@")) {
-                                return "Please enter a valid email";
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            autofocus: false,
-                            decoration: InputDecoration(
-                              hintText: 'Email',
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6.0)),
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark
+            .copyWith(
+              statusBarColor: Colors.white,
+              systemNavigationBarColor: Colors.white),
+              child: SafeArea(
+            minimum: EdgeInsets.all(18.0),
+            maintainBottomViewPadding: true,
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Welcome to ',
+                                  style: Theme.of(context).textTheme.title,
+                                ),
+                                Text('New Talk',
+                                    style: TextStyle(
+                                        fontSize: 24.0,
+                                        fontWeight: FontWeight.w600))
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          TextFormField(
-                            controller: passwordCtrl,
-                            validator: (value) {
-                              if (value.length < 6) {
-                                return "Password must be at least 6 characters long";
-                              }
-                              return null;
-                            },
-                            autofocus: false,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Password',
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6.0)),
+                            Text(
+                              'Please Login OR Sign up to continue app',
                             ),
-                          ),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: RaisedButton(
-                              color: Color(0xFF585858),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              onPressed: () {
-                                if (formKey.currentState.validate()) {
-                                  signIn();
+                            SizedBox(
+                              height: 24.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                GoogleSignInButton(
+                                  darkMode: true,
+                                  text: 'Google',
+                                  onPressed: () {
+                                    var status = signInWithGoogle();
+                                    status.whenComplete(() {}).then((value) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return Home(
+                                              userID: value.uid,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    });
+                                  },
+                                ),
+                                FacebookSignInButton(
+                                  text: 'Facebook',
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                    child: Divider(
+                                  height: 2.0,
+                                  color: Colors.grey,
+                                  indent: 50,
+                                  endIndent: 10,
+                                )),
+                                Text('OR'),
+                                Expanded(
+                                    child: Divider(
+                                  height: 2.0,
+                                  color: Colors.grey,
+                                  indent: 10,
+                                  endIndent: 50,
+                                )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+                            TextFormField(
+                              controller: emailCtrl,
+                              validator: (value) {
+                                if (!value.contains("@")) {
+                                  return "Please enter a valid email";
                                 }
+                                return null;
                               },
-                              padding: EdgeInsets.all(12),
-                              child: Text(
-                                'Login Now',
-                                style: TextStyle(color: Colors.white),
+                              keyboardType: TextInputType.emailAddress,
+                              autofocus: false,
+                              decoration: InputDecoration(
+                                hintText: 'Email',
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(6.0)),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          GestureDetector(
-                            onTap: () => Navigator.of(context).push(
-                                CupertinoPageRoute(builder: (ctx) => SignUp())),
-                            child: Text(
-                              'Don\'t have an account. Register Now',
+                            SizedBox(
+                              height: 16.0,
                             ),
-                          ),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                        ],
-                      )
-              ],
-            ),
-          )),
+                            TextFormField(
+                              controller: passwordCtrl,
+                              validator: (value) {
+                                if (value.length < 6) {
+                                  return "Password must be at least 6 characters long";
+                                }
+                                return null;
+                              },
+                              autofocus: false,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                hintText: 'Password',
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(6.0)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: RaisedButton(
+                                color: Color(0xFF585858),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                onPressed: () {
+                                  if (formKey.currentState.validate()) {
+                                    signIn();
+                                  }
+                                },
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                  'Login Now',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+                            GestureDetector(
+                              onTap: () => Navigator.of(context).push(
+                                  CupertinoPageRoute(builder: (ctx) => SignUp())),
+                              child: Text(
+                                'Don\'t have an account. Register Now',
+                              ),
+                            ),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+                          ],
+                        )
+                ],
+              ),
+            )),
+      ),
     );
   }
 }

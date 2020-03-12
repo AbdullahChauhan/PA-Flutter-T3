@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:flutter/services.dart';
+
 import './sign_in.dart';
 import '../home.dart';
 
@@ -70,7 +71,12 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark
+            .copyWith(
+              statusBarColor: Colors.white,
+              systemNavigationBarColor: Colors.white),
+      child: SafeArea(
           minimum: EdgeInsets.all(18.0),
           maintainBottomViewPadding: true,
           child: Form(
@@ -222,6 +228,7 @@ class _SignUpState extends State<SignUp> {
               ],
             ),
           )),
+      )
     );
   }
 }

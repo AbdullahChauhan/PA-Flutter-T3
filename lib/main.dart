@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pa_flutter_t3/screens/auth/sign_in.dart';
 import 'package:pa_flutter_t3/widgets/auth_widget.dart';
 
 void main() => runApp(MyApp());
