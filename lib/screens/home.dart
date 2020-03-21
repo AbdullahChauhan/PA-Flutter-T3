@@ -175,7 +175,7 @@ class _HomeState extends State<Home> {
                               ],
                             ),
                           ),
-                          Container(
+                          posts[idx].text.isNotEmpty ? Container(
                             width: double.infinity,
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(
@@ -183,7 +183,7 @@ class _HomeState extends State<Home> {
                               child: Text(posts[idx].text,
                                   style: Theme.of(context).textTheme.caption),
                             ),
-                          ),
+                          ) : SizedBox(),
                           posts[idx].imageUrl != null
                               ? CachedNetworkImage(
                                   placeholder: (context, url) => Container(

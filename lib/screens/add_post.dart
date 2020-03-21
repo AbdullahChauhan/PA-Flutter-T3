@@ -66,29 +66,31 @@ class _AddPostState extends State<AddPost> {
   }
 
   void _createPost() {
-    pr.show();
     String postText = postCtrl.text;
     var ref = api.ref;
     var key = ref.push().key;
     var newPost = ref.child(key);
     if (imageFile == null) {
-      post = Post(
-          postID: key,
-          userID: widget.userID,
-          userName: widget.userName,
-          text: postText,
-          shares: 12,
-          views: 1000,
-          timeStamp: DateTime.now().toString(),
-          comments: []);
-      newPost.set(post.toJson());
-      progressDialog(context, 1);
+      if (postText.isNotEmpty) {
+        pr.show();
+
+        post = Post(
+            postID: key,
+            userID: widget.userID,
+            userName: widget.userName,
+            text: postText,
+            shares: 12,
+            views: 1000,
+            timeStamp: DateTime.now().toString(),
+            comments: []);
+        newPost.set(post.toJson());
+        progressDialog(context, 1);
+      }
     } else {
+      pr.show();
       _uploadImage(key, (fileRef) {
         fileRef.getDownloadURL().then((uri) {
-          setState(() {
             imageUrl = uri.toString();
-          });
           post = Post(
               postID: key,
               userID: widget.userID,
@@ -107,7 +109,6 @@ class _AddPostState extends State<AddPost> {
           }
         });
       });
-      // progressDialog(context, 6);
     }
   }
 
