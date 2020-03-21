@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pa_flutter_t3/core/models/Post.dart';
 import 'package:pa_flutter_t3/core/services/Api.dart';
@@ -85,12 +86,21 @@ class _AddPostState extends State<AddPost> {
             comments: []);
         newPost.set(post.toJson());
         progressDialog(context, 1);
+      } else {
+        Fluttertoast.showToast(
+            msg: "Add Text OR Image with caption",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 14.0);
       }
     } else {
       pr.show();
       _uploadImage(key, (fileRef) {
         fileRef.getDownloadURL().then((uri) {
-            imageUrl = uri.toString();
+          imageUrl = uri.toString();
           post = Post(
               postID: key,
               userID: widget.userID,
