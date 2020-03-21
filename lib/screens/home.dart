@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
       Post post =
           Post.fromJson(Map<String, dynamic>.from(event.snapshot.value));
       setState(() {
-        posts.add(post);
+        posts.insert(0, post);
       });
     });
   }
@@ -76,6 +76,7 @@ class _HomeState extends State<Home> {
       completer.complete();
       _loadComments();
     });
+
     return completer.future;
   }
 

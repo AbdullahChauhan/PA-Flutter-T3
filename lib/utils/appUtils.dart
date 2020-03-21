@@ -59,9 +59,7 @@ String readTimestamp(DateTime time, bool forWeeks) {
       timeStr = (diff.inDays / 7).floor().toString() + ' weeks ago';
     }
   } else {
-    print(timeStr);
     timeStr = DateFormat.yMMMMd().format(date);
-    print(timeStr);
   }
   return timeStr;
 }
